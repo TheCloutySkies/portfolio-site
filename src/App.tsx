@@ -3,7 +3,6 @@ import styles from "./App.module.css";
 import ClickSpark from "./components/ClickSpark.jsx";
 import DomeGallery from "./components/DomeGallery.jsx";
 import GradientText from "./components/GradientText.jsx";
-import OrbitImages from "./components/OrbitImages.jsx";
 import TextType from "./components/TextType.jsx";
 import VariableProximity from "./components/VariableProximity.jsx";
 import Waves from "./components/Waves.jsx";
@@ -189,20 +188,6 @@ export default function App() {
             />
           </div>
           <div className={styles.heroTextLayer}>
-            <div className={styles.heroOrbit} aria-hidden>
-              <OrbitImages
-                images={creativeImages.slice(0, 7)}
-                shape="ellipse"
-                responsive
-                baseWidth={900}
-                radiusX={400}
-                radiusY={112}
-                itemSize={56}
-                duration={52}
-                rotation={-12}
-                centerContent={<span className={styles.orbitCenter}>CS</span>}
-              />
-            </div>
             <h1 id="hero-title" className={styles.heroTitleStack}>
               <GradientText
                 className={styles.heroGradientText}
@@ -272,19 +257,6 @@ export default function App() {
         <section id="creative" className={`${styles.section} ${styles.sectionMist}`}>
           <div className={styles.sectionInner}>
             <div className={styles.creativeBoard}>
-              <div className={styles.creativeAccent} aria-hidden>
-                <OrbitImages
-                  images={creativeImages.slice(0, 6)}
-                  shape="circle"
-                  responsive
-                  baseWidth={760}
-                  radius={280}
-                  itemSize={48}
-                  duration={44}
-                  rotation={10}
-                  showPath={false}
-                />
-              </div>
               {creativeImages.map((src, i) => (
                 <div key={`${src}-${i}`} className={styles.creativeTile}>
                   <img src={src} alt="" loading="lazy" />
