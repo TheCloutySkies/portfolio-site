@@ -22,7 +22,6 @@ const PHOTO = {
   c1: "/photos/2C121658-759E-4537-AFE7-88749C851801.jpeg",
   c2: "/photos/4F1AAB13-6AF0-4BF6-8553-354434016F52.jpeg",
   dsc: "/photos/DSC_0497.jpg",
-  e362: "/photos/E362C843-055A-4036-BC62-6E11B3F77F82.jpeg",
   i2165: "/photos/IMG_2165.jpeg",
   i2690: "/photos/IMG_2690.jpeg",
   i2730: "/photos/IMG_2730.jpeg",
@@ -41,7 +40,7 @@ const heroDomeSources = [
   PHOTO.i4758,
   PHOTO.i4767,
   PHOTO.i2730,
-  PHOTO.e362,
+  PHOTO.i4781,
   PHOTO.c2,
   PHOTO.i4763,
 ] as const satisfies readonly string[];
@@ -57,7 +56,7 @@ const workDomeSources = [
   PHOTO.c1,
 ] as const satisfies readonly string[];
 
-const landscapeImages = [PHOTO.dsc, PHOTO.i2739, PHOTO.i4781, PHOTO.e362] as const;
+const landscapeImages = [PHOTO.dsc, PHOTO.i2739, PHOTO.i4781, PHOTO.i4767] as const;
 
 const creativeImages = [
   PHOTO.i2730,
@@ -72,7 +71,8 @@ const creativeImages = [
 
 const socialPhoto = PHOTO.i4758;
 
-const aboutPortrait = PHOTO.e362;
+/** About section portrait — desert / outdoor headshot (`IMG_2690.jpeg`). Replace `PHOTO` or file in `public/photos` if you use a different asset. */
+const aboutPortrait = PHOTO.i2690;
 
 function asDomeImages(urls: readonly string[]) {
   return urls.map((src) => ({ src, alt: "" }));
