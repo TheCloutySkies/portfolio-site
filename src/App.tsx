@@ -7,6 +7,7 @@ import OrbitImages from "./components/OrbitImages.jsx";
 import TextType from "./components/TextType.jsx";
 import VariableProximity from "./components/VariableProximity.jsx";
 import Waves from "./components/Waves.jsx";
+import InstagramProfileEmbed from "./components/InstagramProfileEmbed";
 
 const navLinks = [
   { href: "#work", label: "Work" },
@@ -70,9 +71,8 @@ const creativeImages = [
   PHOTO.i4763,
 ] as const;
 
-const socialPhoto = PHOTO.i4758;
-
-const aboutPortrait = PHOTO.e362;
+/** About section portrait (`IMG_2690.jpeg`) — point at another `PHOTO` key if you swap the file. */
+const aboutPortrait = PHOTO.i2690;
 
 function asDomeImages(urls: readonly string[]) {
   return urls.map((src) => ({ src, alt: "" }));
@@ -413,13 +413,8 @@ export default function App() {
             <div className={styles.socialGrid}>
               <h2 className={styles.socialVertical}>Social media links</h2>
               <div className={styles.socialBody}>
-                <div className={styles.socialPhotoWrap}>
-                  <img
-                    src={socialPhoto}
-                    alt=""
-                    loading="lazy"
-                    className={styles.socialPhoto}
-                  />
+                <div className={styles.socialEmbedWrap}>
+                  <InstagramProfileEmbed />
                 </div>
                 <p className={styles.socialLine}>
                   <a
