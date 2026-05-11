@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./App.module.css";
 import ClickSpark from "./components/ClickSpark.jsx";
 import DomeGallery from "./components/DomeGallery.jsx";
 import GradientText from "./components/GradientText.jsx";
 import TextType from "./components/TextType.jsx";
-import VariableProximity from "./components/VariableProximity.jsx";
 import Waves from "./components/Waves.jsx";
 import InstagramProfileEmbed from "./components/InstagramProfileEmbed";
 
@@ -68,7 +67,6 @@ function asDomeImages(urls: readonly string[]) {
 
 const workDomeImages = asDomeImages(workDomeSources);
 export default function App() {
-  const proximityContainerRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -88,7 +86,7 @@ export default function App() {
 
   return (
     <ClickSpark sparkColor="rgba(59, 130, 246, 0.85)" sparkRadius={20} sparkCount={10} duration={450}>
-      <div ref={proximityContainerRef} className={styles.page}>
+      <div className={styles.page}>
       <div className={styles.wavesBg} aria-hidden>
         <Waves
           lineColor="rgba(15, 23, 42, 0.07)"
@@ -106,16 +104,8 @@ export default function App() {
 
       <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ""}`}>
         <div className={styles.headerInner}>
-          <a className={styles.wordmark} href="#top">
-            <VariableProximity
-              label="Clouty Skies"
-              fromFontVariationSettings="'wght' 520"
-              toFontVariationSettings="'wght' 860"
-              containerRef={proximityContainerRef}
-              className={styles.wordmarkVp}
-              radius={140}
-              falloff="gaussian"
-            />
+          <a className={styles.wordmark} href="https://cloutyskies.org" rel="noopener">
+            CLOUTYSKIES.ORG
           </a>
           <nav className={styles.nav} aria-label="Primary">
             <ul className={styles.navList}>

@@ -98,13 +98,6 @@
   letter-spacing: 0.02em;
 }
 
-.wordmarkVp {
-  font-family: inherit;
-  font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: -0.02em;
-}
-
 .domeWorkWrap {
   position: relative;
   width: 100%;
@@ -154,9 +147,11 @@
 
 .wordmark {
   font-weight: 700;
-  font-size: 0.95rem;
-  letter-spacing: -0.02em;
+  font-size: clamp(0.75rem, 2vw, 0.88rem);
+  letter-spacing: 0.08em;
   color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .wordmark:hover {
