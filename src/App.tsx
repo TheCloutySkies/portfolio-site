@@ -6,6 +6,7 @@ import GradientText from "./components/GradientText.jsx";
 import TextType from "./components/TextType.jsx";
 import Waves from "./components/Waves.jsx";
 import InstagramProfileEmbed from "./components/InstagramProfileEmbed";
+import StaggeredMenu from "./components/StaggeredMenu.jsx";
 
 const navLinks = [
   { href: "#work", label: "Work" },
@@ -15,6 +16,12 @@ const navLinks = [
   { href: "#equipment", label: "Equipment" },
   { href: "#social", label: "Social" },
 ];
+
+const staggeredSocialItems = [
+  { label: "Instagram", link: "https://instagram.com/clouty_skies_photography" },
+  { label: "cloutyskies.org", link: "https://cloutyskies.org" },
+  { label: "YouTube", link: "https://www.youtube.com" },
+] as const;
 
 /** Local gallery: files under `public/photos/` → `/photos/...` */
 const PHOTO = {
@@ -67,7 +74,6 @@ function asDomeImages(urls: readonly string[]) {
 
 const workDomeImages = asDomeImages(workDomeSources);
 export default function App() {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -76,13 +82,6 @@ export default function App() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [menuOpen]);
 
   return (
     <ClickSpark sparkColor="rgba(59, 130, 246, 0.85)" sparkRadius={20} sparkCount={10} duration={450}>
@@ -118,39 +117,31 @@ export default function App() {
               ))}
             </ul>
           </nav>
-          <button
-            type="button"
-            className={styles.menuBtn}
-            aria-expanded={menuOpen}
-            aria-controls="mobile-nav"
-            onClick={() => setMenuOpen((v) => !v)}
-          >
-            <span className={styles.srOnly}>Menu</span>
-            <span className={styles.menuIcon} aria-hidden />
-          </button>
         </div>
       </header>
 
-      <div
-        id="mobile-nav"
-        className={`${styles.mobileSheet} ${menuOpen ? styles.mobileOpen : ""}`}
-        aria-hidden={!menuOpen}
-      >
-        <nav aria-label="Mobile">
-          <ul className={styles.mobileList}>
-            {navLinks.map((l) => (
-              <li key={l.href}>
-                <a
-                  href={l.href}
-                  className={styles.mobileLink}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+      <div className={styles.staggeredMenuMount}>
+        <StaggeredMenu
+          isFixed
+          position="right"
+          items={navLinks.map((l) => ({ label: l.label, link: l.href }))}
+          socialItems={[...staggeredSocialItems]}
+          displaySocials
+          displayItemNumbering={false}
+          menuButtonColor="#0f172a"
+          openMenuButtonColor="#ffffff"
+          accentColor="#2563eb"
+          colors={["#eef2ff", "#e0e7ff", "#c7d2fe", "#1e293b"]}
+          logoUrl="/favicon.svg"
+          changeMenuColorOnOpen
+          closeOnClickAway
+          onMenuOpen={() => {
+            document.body.style.overflow = "hidden";
+          }}
+          onMenuClose={() => {
+            document.body.style.overflow = "";
+          }}
+        />
       </div>
 
       <main id="top">
