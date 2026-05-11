@@ -35,17 +35,6 @@ const PHOTO = {
   i4781: "/photos/IMG_4781.jpeg",
 } as const;
 
-/** Hero dome: wide / impactful mix */
-const heroDomeSources = [
-  PHOTO.dsc,
-  PHOTO.i4758,
-  PHOTO.i4767,
-  PHOTO.i2730,
-  PHOTO.e362,
-  PHOTO.c2,
-  PHOTO.i4763,
-] as const satisfies readonly string[];
-
 /** Work section dome: remaining set */
 const workDomeSources = [
   PHOTO.i2165,
@@ -77,7 +66,6 @@ function asDomeImages(urls: readonly string[]) {
   return urls.map((src) => ({ src, alt: "" }));
 }
 
-const heroDomeImages = asDomeImages(heroDomeSources);
 const workDomeImages = asDomeImages(workDomeSources);
 export default function App() {
   const proximityContainerRef = useRef<HTMLDivElement>(null);
@@ -177,16 +165,6 @@ export default function App() {
 
       <main id="top">
         <section className={styles.heroShell} aria-labelledby="hero-title">
-          <div className={styles.heroDomeLayer}>
-            <DomeGallery
-              images={heroDomeImages}
-              fit={0.52}
-              minRadius={420}
-              segments={28}
-              overlayBlurColor="rgba(250, 250, 252, 0.82)"
-              grayscale={false}
-            />
-          </div>
           <div className={styles.heroTextLayer}>
             <h1 id="hero-title" className={styles.heroTitleStack}>
               <GradientText
@@ -212,7 +190,7 @@ export default function App() {
               loop
               startOnVisible
             />
-            <p className={styles.nameRight}>Lonnie Johnston</p>
+            <p className={styles.heroName}>Lonnie Johnston</p>
             <p className={styles.heroDomain}>portfolio.cloutyskies.org</p>
           </div>
         </section>

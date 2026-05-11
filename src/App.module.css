@@ -15,42 +15,35 @@
   pointer-events: none;
 }
 
-/* ——— Hero (DomeGallery + overlays) ——— */
+/* ——— Hero (typography + waves backdrop) ——— */
 .heroShell {
   position: relative;
-  min-height: min(92vh, 900px);
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: var(--mist);
-}
-
-.heroDomeLayer {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
+  background: linear-gradient(180deg, #f8fafc 0%, var(--mist) 55%, #eef2ff 100%);
 }
 
 .heroTextLayer {
   position: relative;
   z-index: 10;
-  pointer-events: none;
+  pointer-events: auto;
   max-width: var(--max);
   margin: 0 auto;
-  padding: 5.5rem 1.25rem 2.5rem;
+  padding: clamp(3.5rem, 12vw, 6rem) 1.25rem clamp(2.5rem, 8vw, 4rem);
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
-  min-height: min(88vh, 860px);
-  justify-content: flex-end;
+  gap: clamp(0.85rem, 2vw, 1.25rem);
+  min-height: min(78vh, 720px);
+  justify-content: center;
   align-items: flex-start;
-  text-shadow: 0 2px 28px rgba(255, 255, 255, 0.95), 0 0 1px rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
 
 @media (min-width: 900px) {
   .heroTextLayer {
-    padding-top: 6rem;
-    padding-bottom: 3rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 }
 
@@ -65,9 +58,9 @@
 .heroGradientText {
   margin: 0;
   font-weight: 850;
-  font-size: clamp(2rem, 6.5vw, 3.75rem);
-  line-height: 0.98;
-  letter-spacing: -0.035em;
+  font-size: clamp(2.35rem, 8vw, 4.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.04em;
   text-transform: uppercase;
 }
 
@@ -81,11 +74,28 @@
 
 .heroTagline {
   margin: 0;
-  max-width: 28rem;
-  font-size: clamp(0.85rem, 2.2vw, 1rem);
+  max-width: 32rem;
+  font-size: clamp(0.92rem, 2.4vw, 1.08rem);
   font-weight: 500;
-  color: rgba(15, 23, 42, 0.88);
+  color: rgba(15, 23, 42, 0.82);
+  line-height: 1.5;
   min-height: 2.75rem;
+}
+
+.heroName {
+  margin: 0.35rem 0 0;
+  font-size: clamp(0.82rem, 2.2vw, 0.95rem);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.heroDomain {
+  margin: 0.35rem 0 0;
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
 }
 
 .wordmarkVp {
@@ -280,13 +290,6 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   align-self: flex-start;
-}
-
-.heroDomain {
-  margin: 0.25rem 0 0;
-  font-size: 0.75rem;
-  color: var(--muted);
-  letter-spacing: 0.02em;
 }
 
 /* ——— Sections ——— */
