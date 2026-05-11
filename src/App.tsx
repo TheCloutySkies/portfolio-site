@@ -400,12 +400,12 @@ export default function App() {
                 </p>
                 <p className={styles.socialLine}>
                   <a
-                    href="https://lonniejohnston.com"
+                    href="https://cloutyskies.org"
                     target="_blank"
                     rel="noreferrer"
                     className={styles.linkClassic}
                   >
-                    lonniejohnston.com
+                    cloutyskies.org
                   </a>
                 </p>
                 <p className={styles.socialLine}>
