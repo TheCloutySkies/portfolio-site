@@ -57,7 +57,8 @@ const workDomeSources = [
   PHOTO.c1,
 ] as const satisfies readonly string[];
 
-const landscapeImages = [PHOTO.dsc, PHOTO.i2739, PHOTO.i4781, PHOTO.e362] as const;
+/** Landscapes grid — wider / outdoor shots (edit `PHOTO.*` if a thumbnail should swap). */
+const landscapeImages = [PHOTO.dsc, PHOTO.i2690, PHOTO.i3873, PHOTO.i4767] as const;
 
 const creativeImages = [
   PHOTO.i2730,
@@ -84,6 +85,7 @@ export default function App() {
   const proximityContainerRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [landscapeLightbox, setLandscapeLightbox] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -93,11 +95,20 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    document.body.style.overflow = menuOpen || landscapeLightbox ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [menuOpen]);
+  }, [menuOpen, landscapeLightbox]);
+
+  useEffect(() => {
+    if (!landscapeLightbox) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLandscapeLightbox(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [landscapeLightbox]);
 
   return (
     <ClickSpark sparkColor="rgba(59, 130, 246, 0.85)" sparkRadius={20} sparkCount={10} duration={450}>
@@ -258,7 +269,14 @@ export default function App() {
               <div className={styles.landGrid}>
                 {landscapeImages.map((src, i) => (
                   <div key={`${src}-${i}`} className={styles.landCell}>
-                    <img src={src} alt="" className={styles.landImg} loading="lazy" />
+                    <button
+                      type="button"
+                      className={styles.landThumbBtn}
+                      onClick={() => setLandscapeLightbox(src)}
+                      aria-label={`View landscape photograph ${i + 1} full size`}
+                    >
+                      <img src={src} alt="" className={styles.landImg} loading="lazy" />
+                    </button>
                   </div>
                 ))}
               </div>
@@ -463,6 +481,28 @@ export default function App() {
           Cloudflare
         </p>
       </footer>
+
+      {landscapeLightbox ? (
+        <div className={styles.photoLightbox} role="dialog" aria-modal="true" aria-label="Expanded photograph">
+          <button
+            type="button"
+            className={styles.photoLightboxBackdrop}
+            aria-label="Close expanded image"
+            onClick={() => setLandscapeLightbox(null)}
+          />
+          <div className={styles.photoLightboxInner}>
+            <button
+              type="button"
+              className={styles.photoLightboxClose}
+              onClick={() => setLandscapeLightbox(null)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <img src={landscapeLightbox} alt="" className={styles.photoLightboxImg} decoding="async" />
+          </div>
+        </div>
+      ) : null}
       </div>
     </ClickSpark>
   );
