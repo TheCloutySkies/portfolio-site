@@ -1,5 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styles from "./App.module.css";
+import ClickSpark from "./components/ClickSpark.jsx";
+import DomeGallery from "./components/DomeGallery.jsx";
+import GradientText from "./components/GradientText.jsx";
+import OrbitImages from "./components/OrbitImages.jsx";
+import TextType from "./components/TextType.jsx";
+import VariableProximity from "./components/VariableProximity.jsx";
+import Waves from "./components/Waves.jsx";
 
 const navLinks = [
   { href: "#work", label: "Work" },
@@ -47,7 +54,14 @@ const socialPhoto =
 const aboutPortrait =
   "https://images.unsplash.com/photo-1608501821307-163a2bcf390d?w=800&q=80&auto=format&fit=crop";
 
+function asDomeImages(urls: readonly string[]) {
+  return urls.map((src) => ({ src, alt: "" }));
+}
+
+const heroDomeImages = asDomeImages([heroImage, ...landscapeImages]);
+const workDomeImages = asDomeImages(previousWorkImages);
 export default function App() {
+  const proximityContainerRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -66,11 +80,35 @@ export default function App() {
   }, [menuOpen]);
 
   return (
-    <div className={styles.page}>
+    <ClickSpark sparkColor="rgba(59, 130, 246, 0.85)" sparkRadius={20} sparkCount={10} duration={450}>
+      <div ref={proximityContainerRef} className={styles.page}>
+      <div className={styles.wavesBg} aria-hidden>
+        <Waves
+          lineColor="rgba(15, 23, 42, 0.07)"
+          backgroundColor="transparent"
+          waveSpeedX={0.01}
+          waveSpeedY={0.0045}
+          waveAmpX={26}
+          waveAmpY={13}
+          friction={0.93}
+          tension={0.004}
+          xGap={11}
+          yGap={34}
+        />
+      </div>
+
       <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ""}`}>
         <div className={styles.headerInner}>
           <a className={styles.wordmark} href="#top">
-            Clouty Skies
+            <VariableProximity
+              label="Clouty Skies"
+              fromFontVariationSettings="'wght' 520"
+              toFontVariationSettings="'wght' 860"
+              containerRef={proximityContainerRef}
+              className={styles.wordmarkVp}
+              radius={140}
+              falloff="gaussian"
+            />
           </a>
           <nav className={styles.nav} aria-label="Primary">
             <ul className={styles.navList}>
@@ -119,54 +157,77 @@ export default function App() {
       </div>
 
       <main id="top">
-        <section className={styles.hero} aria-labelledby="hero-title">
-          <div className={styles.heroInner}>
-            <div className={styles.heroFrame}>
-              <img
-                src={heroImage}
-                alt="Calm lake reflecting mountains — replace with your hero photograph"
-                className={styles.heroImg}
-                width={1600}
-                height={1000}
-                loading="eager"
-                decoding="async"
+        <section className={styles.heroShell} aria-labelledby="hero-title">
+          <div className={styles.heroDomeLayer}>
+            <DomeGallery
+              images={heroDomeImages}
+              fit={0.52}
+              minRadius={420}
+              segments={28}
+              overlayBlurColor="rgba(250, 250, 252, 0.82)"
+              grayscale={false}
+            />
+          </div>
+          <div className={styles.heroTextLayer}>
+            <div className={styles.heroOrbit} aria-hidden>
+              <OrbitImages
+                images={creativeImages.slice(0, 7)}
+                shape="ellipse"
+                responsive
+                baseWidth={900}
+                radiusX={400}
+                radiusY={112}
+                itemSize={56}
+                duration={52}
+                rotation={-12}
+                centerContent={<span className={styles.orbitCenter}>CS</span>}
               />
             </div>
-            <div className={styles.heroTitles}>
-              <div className={styles.heroTitleBlock}>
-                <h1 id="hero-title" className={styles.stackedTitle}>
-                  <span className={styles.titleLine}>Creative</span>
-                  <span className={styles.titleLine}>
-                    Portfolio
-                    <sup className={styles.yearSup}>2026</sup>
-                  </span>
-                </h1>
-              </div>
-              <p className={styles.nameRight}>Lonnie Johnston</p>
-            </div>
+            <h1 id="hero-title" className={styles.heroTitleStack}>
+              <GradientText
+                className={styles.heroGradientText}
+                colors={["#0f172a", "#2563eb", "#7c3aed", "#0f172a"]}
+                animationSpeed={11}
+              >
+                Creative Portfolio
+              </GradientText>
+              <span className={styles.heroYear}>2026</span>
+            </h1>
+            <TextType
+              as="p"
+              className={styles.heroTagline}
+              text={[
+                "Nature, street & brand imagery — crafted with care.",
+                "Cinematic video, aerial work, and social-ready edits.",
+                "Let’s shape your story — frame by frame.",
+              ]}
+              typingSpeed={38}
+              pauseDuration={2600}
+              deletingSpeed={28}
+              loop
+              startOnVisible
+            />
+            <p className={styles.nameRight}>Lonnie Johnston</p>
             <p className={styles.heroDomain}>portfolio.cloutyskies.org</p>
           </div>
         </section>
 
         <section id="work" className={styles.section}>
+          <div className={styles.sectionInner}>
+            <h2 className={styles.h2}>Previous work</h2>
+          </div>
           <div className={styles.sectionBleed}>
-            <div className={styles.collageWrap}>
-              <div className={styles.prevGrid}>
-                {previousWorkImages.map((src, i) => (
-                  <div key={`${src}-${i}`} className={styles.prevCell}>
-                    <img
-                      src={src}
-                      alt=""
-                      className={styles.prevImg}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                ))}
+            <div className={styles.sectionInner}>
+              <div className={styles.domeWorkWrap}>
+                <DomeGallery
+                  images={workDomeImages}
+                  fit={0.48}
+                  minRadius={420}
+                  segments={26}
+                  overlayBlurColor="#121016"
+                  grayscale={false}
+                />
               </div>
-              <p className={styles.collageLabel} aria-hidden>
-                Previous work
-              </p>
             </div>
           </div>
         </section>
@@ -191,6 +252,19 @@ export default function App() {
         <section id="creative" className={`${styles.section} ${styles.sectionMist}`}>
           <div className={styles.sectionInner}>
             <div className={styles.creativeBoard}>
+              <div className={styles.creativeAccent} aria-hidden>
+                <OrbitImages
+                  images={creativeImages.slice(0, 6)}
+                  shape="circle"
+                  responsive
+                  baseWidth={760}
+                  radius={280}
+                  itemSize={48}
+                  duration={44}
+                  rotation={10}
+                  showPath={false}
+                />
+              </div>
               {creativeImages.map((src, i) => (
                 <div key={`${src}-${i}`} className={styles.creativeTile}>
                   <img src={src} alt="" loading="lazy" />
@@ -207,7 +281,15 @@ export default function App() {
           <div className={styles.sectionInner}>
             <div className={styles.resumeGrid}>
               <div className={`${styles.resumeCell} ${styles.resumeIntro}`}>
-                <h2 className={styles.resumeHeading}>Thanks for considering me for your next project!</h2>
+                <div className={styles.aboutHeadingWrap} role="heading" aria-level={2}>
+                  <GradientText
+                    className={styles.gradientAbout}
+                    colors={["#f8fafc", "#7dd3fc", "#d8b4fe", "#f8fafc"]}
+                    animationSpeed={12}
+                  >
+                    Thanks for considering me for your next project!
+                  </GradientText>
+                </div>
                 <p className={styles.resumeProse}>
                   My name is Lonnie, and I have been passionate about video and photography since I
                   first picked up a camera. My background is rooted in nature and street photography,
@@ -361,6 +443,7 @@ export default function App() {
           Cloudflare
         </p>
       </footer>
-    </div>
+      </div>
+    </ClickSpark>
   );
 }
