@@ -290,19 +290,6 @@ export default function App() {
         <section id="creative" className={`${styles.section} ${styles.sectionMist}`}>
           <div className={styles.sectionInner}>
             <div className={styles.creativeBoard}>
-              <div className={styles.creativeAccent} aria-hidden>
-                <OrbitImages
-                  images={creativeImages.slice(0, 6)}
-                  shape="circle"
-                  responsive
-                  baseWidth={760}
-                  radius={280}
-                  itemSize={48}
-                  duration={44}
-                  rotation={10}
-                  showPath={false}
-                />
-              </div>
               {creativeImages.map((src, i) => (
                 <div key={`${src}-${i}`} className={styles.creativeTile}>
                   <img src={src} alt="" loading="lazy" />
