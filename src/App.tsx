@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./App.module.css";
 import ClickSpark from "./components/ClickSpark.jsx";
 import DomeGallery from "./components/DomeGallery.jsx";
 import GradientText from "./components/GradientText.jsx";
-import OrbitImages from "./components/OrbitImages.jsx";
 import TextType from "./components/TextType.jsx";
-import VariableProximity from "./components/VariableProximity.jsx";
 import Waves from "./components/Waves.jsx";
+import InstagramProfileEmbed from "./components/InstagramProfileEmbed";
 
 const navLinks = [
   { href: "#work", label: "Work" },
@@ -35,17 +34,6 @@ const PHOTO = {
   i4781: "/photos/IMG_4781.jpeg",
 } as const;
 
-/** Hero dome: wide / impactful mix */
-const heroDomeSources = [
-  PHOTO.dsc,
-  PHOTO.i4758,
-  PHOTO.i4767,
-  PHOTO.i2730,
-  PHOTO.e362,
-  PHOTO.c2,
-  PHOTO.i4763,
-] as const satisfies readonly string[];
-
 /** Work section dome: remaining set */
 const workDomeSources = [
   PHOTO.i2165,
@@ -71,18 +59,15 @@ const creativeImages = [
   PHOTO.i4763,
 ] as const;
 
-const socialPhoto = PHOTO.i4758;
-
-const aboutPortrait = PHOTO.e362;
+/** About section portrait (`IMG_2690.jpeg`) — point at another `PHOTO` key if you swap the file. */
+const aboutPortrait = PHOTO.i2690;
 
 function asDomeImages(urls: readonly string[]) {
   return urls.map((src) => ({ src, alt: "" }));
 }
 
-const heroDomeImages = asDomeImages(heroDomeSources);
 const workDomeImages = asDomeImages(workDomeSources);
 export default function App() {
-  const proximityContainerRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [landscapeLightbox, setLandscapeLightbox] = useState<string | null>(null);
@@ -112,7 +97,7 @@ export default function App() {
 
   return (
     <ClickSpark sparkColor="rgba(59, 130, 246, 0.85)" sparkRadius={20} sparkCount={10} duration={450}>
-      <div ref={proximityContainerRef} className={styles.page}>
+      <div className={styles.page}>
       <div className={styles.wavesBg} aria-hidden>
         <Waves
           lineColor="rgba(15, 23, 42, 0.07)"
@@ -130,16 +115,8 @@ export default function App() {
 
       <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ""}`}>
         <div className={styles.headerInner}>
-          <a className={styles.wordmark} href="#top">
-            <VariableProximity
-              label="Clouty Skies"
-              fromFontVariationSettings="'wght' 520"
-              toFontVariationSettings="'wght' 860"
-              containerRef={proximityContainerRef}
-              className={styles.wordmarkVp}
-              radius={140}
-              falloff="gaussian"
-            />
+          <a className={styles.wordmark} href="https://cloutyskies.org" rel="noopener">
+            CLOUTYSKIES.ORG
           </a>
           <nav className={styles.nav} aria-label="Primary">
             <ul className={styles.navList}>
@@ -189,31 +166,7 @@ export default function App() {
 
       <main id="top">
         <section className={styles.heroShell} aria-labelledby="hero-title">
-          <div className={styles.heroDomeLayer}>
-            <DomeGallery
-              images={heroDomeImages}
-              fit={0.52}
-              minRadius={420}
-              segments={28}
-              overlayBlurColor="rgba(250, 250, 252, 0.82)"
-              grayscale={false}
-            />
-          </div>
           <div className={styles.heroTextLayer}>
-            <div className={styles.heroOrbit} aria-hidden>
-              <OrbitImages
-                images={creativeImages.slice(0, 7)}
-                shape="ellipse"
-                responsive
-                baseWidth={900}
-                radiusX={400}
-                radiusY={112}
-                itemSize={56}
-                duration={52}
-                rotation={-12}
-                centerContent={<span className={styles.orbitCenter}>CS</span>}
-              />
-            </div>
             <h1 id="hero-title" className={styles.heroTitleStack}>
               <GradientText
                 className={styles.heroGradientText}
@@ -238,7 +191,7 @@ export default function App() {
               loop
               startOnVisible
             />
-            <p className={styles.nameRight}>Lonnie Johnston</p>
+            <p className={styles.heroName}>Lonnie Johnston</p>
             <p className={styles.heroDomain}>portfolio.cloutyskies.org</p>
           </div>
         </section>
@@ -418,13 +371,8 @@ export default function App() {
             <div className={styles.socialGrid}>
               <h2 className={styles.socialVertical}>Social media links</h2>
               <div className={styles.socialBody}>
-                <div className={styles.socialPhotoWrap}>
-                  <img
-                    src={socialPhoto}
-                    alt=""
-                    loading="lazy"
-                    className={styles.socialPhoto}
-                  />
+                <div className={styles.socialEmbedWrap}>
+                  <InstagramProfileEmbed />
                 </div>
                 <p className={styles.socialLine}>
                   <a
@@ -438,12 +386,12 @@ export default function App() {
                 </p>
                 <p className={styles.socialLine}>
                   <a
-                    href="https://lonniejohnston.com"
+                    href="https://cloutyskies.org"
                     target="_blank"
                     rel="noreferrer"
                     className={styles.linkClassic}
                   >
-                    lonniejohnston.com
+                    cloutyskies.org
                   </a>
                 </p>
                 <p className={styles.socialLine}>
