@@ -21,7 +21,6 @@ const PHOTO = {
   c1: "/photos/2C121658-759E-4537-AFE7-88749C851801.jpeg",
   c2: "/photos/4F1AAB13-6AF0-4BF6-8553-354434016F52.jpeg",
   dsc: "/photos/DSC_0497.jpg",
-  e362: "/photos/E362C843-055A-4036-BC62-6E11B3F77F82.jpeg",
   i2165: "/photos/IMG_2165.jpeg",
   i2690: "/photos/IMG_2690.jpeg",
   i2730: "/photos/IMG_2730.jpeg",
@@ -45,8 +44,8 @@ const workDomeSources = [
   PHOTO.c1,
 ] as const satisfies readonly string[];
 
-/** Landscapes grid — wider / outdoor shots (edit `PHOTO.*` if a thumbnail should swap). */
-const landscapeImages = [PHOTO.dsc, PHOTO.i2690, PHOTO.i3873, PHOTO.i4767] as const;
+/** Landscapes grid — outdoor shots only (`IMG_2690` is the About headshot, not repeated here). */
+const landscapeImages = [PHOTO.dsc, PHOTO.i2739, PHOTO.i4781, PHOTO.i4767] as const;
 
 const creativeImages = [
   PHOTO.i2730,
@@ -59,7 +58,7 @@ const creativeImages = [
   PHOTO.i4763,
 ] as const;
 
-/** About section portrait (`IMG_2690.jpeg`) — point at another `PHOTO` key if you swap the file. */
+/** About headshot — `IMG_2690.jpeg` (`PHOTO.i2690`). The unrelated E362 file is not referenced. */
 const aboutPortrait = PHOTO.i2690;
 
 function asDomeImages(urls: readonly string[]) {
