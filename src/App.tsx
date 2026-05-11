@@ -17,49 +17,69 @@ const navLinks = [
   { href: "#social", label: "Social" },
 ];
 
-/** Placeholder photography — swap for your own files in `/public` when ready. */
-const heroImage =
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1800&q=85&auto=format&fit=crop";
+/** Local gallery: files under `public/photos/` → `/photos/...` */
+const PHOTO = {
+  c1: "/photos/2C121658-759E-4537-AFE7-88749C851801.jpeg",
+  c2: "/photos/4F1AAB13-6AF0-4BF6-8553-354434016F52.jpeg",
+  dsc: "/photos/DSC_0497.jpg",
+  e362: "/photos/E362C843-055A-4036-BC62-6E11B3F77F82.jpeg",
+  i2165: "/photos/IMG_2165.jpeg",
+  i2690: "/photos/IMG_2690.jpeg",
+  i2730: "/photos/IMG_2730.jpeg",
+  i2739: "/photos/IMG_2739.jpeg",
+  i3720: "/photos/IMG_3720.jpeg",
+  i3873: "/photos/IMG_3873.JPG",
+  i4758: "/photos/IMG_4758.jpeg",
+  i4763: "/photos/IMG_4763.jpeg",
+  i4767: "/photos/IMG_4767.jpeg",
+  i4781: "/photos/IMG_4781.jpeg",
+} as const;
 
-const previousWorkImages = [
-  "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?w=800&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&q=80&auto=format&fit=crop",
-];
+/** Hero dome: wide / impactful mix */
+const heroDomeSources = [
+  PHOTO.dsc,
+  PHOTO.i4758,
+  PHOTO.i4767,
+  PHOTO.i2730,
+  PHOTO.e362,
+  PHOTO.c2,
+  PHOTO.i4763,
+] as const satisfies readonly string[];
 
-const landscapeImages = [
-  "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=900&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=900&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=900&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=900&q=80&auto=format&fit=crop",
-];
+/** Work section dome: remaining set */
+const workDomeSources = [
+  PHOTO.i2165,
+  PHOTO.i2690,
+  PHOTO.i2739,
+  PHOTO.i3720,
+  PHOTO.i3873,
+  PHOTO.i4781,
+  PHOTO.c1,
+] as const satisfies readonly string[];
+
+const landscapeImages = [PHOTO.dsc, PHOTO.i2739, PHOTO.i4781, PHOTO.e362] as const;
 
 const creativeImages = [
-  "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1518895949257-7621c3b88656?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=700&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&q=80&auto=format&fit=crop",
-];
+  PHOTO.i2730,
+  PHOTO.i2165,
+  PHOTO.c2,
+  PHOTO.i4767,
+  PHOTO.i2690,
+  PHOTO.i4758,
+  PHOTO.i3720,
+  PHOTO.i4763,
+] as const;
 
-const socialPhoto =
-  "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=900&q=80&auto=format&fit=crop";
+const socialPhoto = PHOTO.i4758;
 
-const aboutPortrait =
-  "https://images.unsplash.com/photo-1608501821307-163a2bcf390d?w=800&q=80&auto=format&fit=crop";
+const aboutPortrait = PHOTO.e362;
 
 function asDomeImages(urls: readonly string[]) {
   return urls.map((src) => ({ src, alt: "" }));
 }
 
-const heroDomeImages = asDomeImages([heroImage, ...landscapeImages]);
-const workDomeImages = asDomeImages(previousWorkImages);
+const heroDomeImages = asDomeImages(heroDomeSources);
+const workDomeImages = asDomeImages(workDomeSources);
 export default function App() {
   const proximityContainerRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
