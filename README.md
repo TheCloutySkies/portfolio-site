@@ -31,3 +31,7 @@ After deploy, `not_found_handling: single-page-application` ensures client-side 
 - React 19, TypeScript, Vite
 - CSS Modules for layout (easy to layer in Framer Motion, R3F, etc. later)
 - Wrangler 4.x + Workers static assets
+
+## Content
+
+Copy and structure follow **Lonnie Johnston / Clouty Skies** portfolio references. Hero, collages, and social blocks use **Unsplash placeholders**; replace `src/App.tsx` image URLs with assets in `/public` or your CDN. Update the **YouTube portfolio** link in the Social section when you have the channel URL.
