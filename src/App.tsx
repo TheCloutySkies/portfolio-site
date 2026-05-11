@@ -1,12 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./App.module.css";
 import ClickSpark from "./components/ClickSpark.jsx";
 import DomeGallery from "./components/DomeGallery.jsx";
 import GradientText from "./components/GradientText.jsx";
-import OrbitImages from "./components/OrbitImages.jsx";
 import TextType from "./components/TextType.jsx";
-import VariableProximity from "./components/VariableProximity.jsx";
 import Waves from "./components/Waves.jsx";
+import InstagramProfileEmbed from "./components/InstagramProfileEmbed";
 
 const navLinks = [
   { href: "#work", label: "Work" },
@@ -34,17 +33,6 @@ const PHOTO = {
   i4781: "/photos/IMG_4781.jpeg",
 } as const;
 
-/** Hero dome: wide / impactful mix */
-const heroDomeSources = [
-  PHOTO.dsc,
-  PHOTO.i4758,
-  PHOTO.i4767,
-  PHOTO.i2730,
-  PHOTO.i4781,
-  PHOTO.c2,
-  PHOTO.i4763,
-] as const satisfies readonly string[];
-
 /** Work section dome: remaining set */
 const workDomeSources = [
   PHOTO.i2165,
@@ -56,6 +44,7 @@ const workDomeSources = [
   PHOTO.c1,
 ] as const satisfies readonly string[];
 
+/** Landscapes grid — outdoor shots only (`IMG_2690` is the About headshot, not repeated here). */
 const landscapeImages = [PHOTO.dsc, PHOTO.i2739, PHOTO.i4781, PHOTO.i4767] as const;
 
 const creativeImages = [
@@ -69,21 +58,18 @@ const creativeImages = [
   PHOTO.i4763,
 ] as const;
 
-const socialPhoto = PHOTO.i4758;
-
-/** About section portrait — desert / outdoor headshot (`IMG_2690.jpeg`). Replace `PHOTO` or file in `public/photos` if you use a different asset. */
+/** About headshot — `IMG_2690.jpeg` (`PHOTO.i2690`). The unrelated E362 file is not referenced. */
 const aboutPortrait = PHOTO.i2690;
 
 function asDomeImages(urls: readonly string[]) {
   return urls.map((src) => ({ src, alt: "" }));
 }
 
-const heroDomeImages = asDomeImages(heroDomeSources);
 const workDomeImages = asDomeImages(workDomeSources);
 export default function App() {
-  const proximityContainerRef = useRef<HTMLDivElement>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [landscapeLightbox, setLandscapeLightbox] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -93,15 +79,24 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = menuOpen ? "hidden" : "";
+    document.body.style.overflow = menuOpen || landscapeLightbox ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [menuOpen]);
+  }, [menuOpen, landscapeLightbox]);
+
+  useEffect(() => {
+    if (!landscapeLightbox) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLandscapeLightbox(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [landscapeLightbox]);
 
   return (
     <ClickSpark sparkColor="rgba(59, 130, 246, 0.85)" sparkRadius={20} sparkCount={10} duration={450}>
-      <div ref={proximityContainerRef} className={styles.page}>
+      <div className={styles.page}>
       <div className={styles.wavesBg} aria-hidden>
         <Waves
           lineColor="rgba(15, 23, 42, 0.07)"
@@ -119,16 +114,8 @@ export default function App() {
 
       <header className={`${styles.header} ${scrolled ? styles.headerScrolled : ""}`}>
         <div className={styles.headerInner}>
-          <a className={styles.wordmark} href="#top">
-            <VariableProximity
-              label="Clouty Skies"
-              fromFontVariationSettings="'wght' 520"
-              toFontVariationSettings="'wght' 860"
-              containerRef={proximityContainerRef}
-              className={styles.wordmarkVp}
-              radius={140}
-              falloff="gaussian"
-            />
+          <a className={styles.wordmark} href="https://cloutyskies.org" rel="noopener">
+            CLOUTYSKIES.ORG
           </a>
           <nav className={styles.nav} aria-label="Primary">
             <ul className={styles.navList}>
@@ -178,31 +165,7 @@ export default function App() {
 
       <main id="top">
         <section className={styles.heroShell} aria-labelledby="hero-title">
-          <div className={styles.heroDomeLayer}>
-            <DomeGallery
-              images={heroDomeImages}
-              fit={0.52}
-              minRadius={420}
-              segments={28}
-              overlayBlurColor="rgba(250, 250, 252, 0.82)"
-              grayscale={false}
-            />
-          </div>
           <div className={styles.heroTextLayer}>
-            <div className={styles.heroOrbit} aria-hidden>
-              <OrbitImages
-                images={creativeImages.slice(0, 7)}
-                shape="ellipse"
-                responsive
-                baseWidth={900}
-                radiusX={400}
-                radiusY={112}
-                itemSize={56}
-                duration={52}
-                rotation={-12}
-                centerContent={<span className={styles.orbitCenter}>CS</span>}
-              />
-            </div>
             <h1 id="hero-title" className={styles.heroTitleStack}>
               <GradientText
                 className={styles.heroGradientText}
@@ -227,7 +190,7 @@ export default function App() {
               loop
               startOnVisible
             />
-            <p className={styles.nameRight}>Lonnie Johnston</p>
+            <p className={styles.heroName}>Lonnie Johnston</p>
             <p className={styles.heroDomain}>portfolio.cloutyskies.org</p>
           </div>
         </section>
@@ -258,7 +221,14 @@ export default function App() {
               <div className={styles.landGrid}>
                 {landscapeImages.map((src, i) => (
                   <div key={`${src}-${i}`} className={styles.landCell}>
-                    <img src={src} alt="" className={styles.landImg} loading="lazy" />
+                    <button
+                      type="button"
+                      className={styles.landThumbBtn}
+                      onClick={() => setLandscapeLightbox(src)}
+                      aria-label={`View landscape photograph ${i + 1} full size`}
+                    >
+                      <img src={src} alt="" className={styles.landImg} loading="lazy" />
+                    </button>
                   </div>
                 ))}
               </div>
@@ -272,19 +242,6 @@ export default function App() {
         <section id="creative" className={`${styles.section} ${styles.sectionMist}`}>
           <div className={styles.sectionInner}>
             <div className={styles.creativeBoard}>
-              <div className={styles.creativeAccent} aria-hidden>
-                <OrbitImages
-                  images={creativeImages.slice(0, 6)}
-                  shape="circle"
-                  responsive
-                  baseWidth={760}
-                  radius={280}
-                  itemSize={48}
-                  duration={44}
-                  rotation={10}
-                  showPath={false}
-                />
-              </div>
               {creativeImages.map((src, i) => (
                 <div key={`${src}-${i}`} className={styles.creativeTile}>
                   <img src={src} alt="" loading="lazy" />
@@ -413,13 +370,8 @@ export default function App() {
             <div className={styles.socialGrid}>
               <h2 className={styles.socialVertical}>Social media links</h2>
               <div className={styles.socialBody}>
-                <div className={styles.socialPhotoWrap}>
-                  <img
-                    src={socialPhoto}
-                    alt=""
-                    loading="lazy"
-                    className={styles.socialPhoto}
-                  />
+                <div className={styles.socialEmbedWrap}>
+                  <InstagramProfileEmbed />
                 </div>
                 <p className={styles.socialLine}>
                   <a
@@ -433,12 +385,12 @@ export default function App() {
                 </p>
                 <p className={styles.socialLine}>
                   <a
-                    href="https://lonniejohnston.com"
+                    href="https://cloutyskies.org"
                     target="_blank"
                     rel="noreferrer"
                     className={styles.linkClassic}
                   >
-                    lonniejohnston.com
+                    cloutyskies.org
                   </a>
                 </p>
                 <p className={styles.socialLine}>
@@ -463,6 +415,28 @@ export default function App() {
           Cloudflare
         </p>
       </footer>
+
+      {landscapeLightbox ? (
+        <div className={styles.photoLightbox} role="dialog" aria-modal="true" aria-label="Expanded photograph">
+          <button
+            type="button"
+            className={styles.photoLightboxBackdrop}
+            aria-label="Close expanded image"
+            onClick={() => setLandscapeLightbox(null)}
+          />
+          <div className={styles.photoLightboxInner}>
+            <button
+              type="button"
+              className={styles.photoLightboxClose}
+              onClick={() => setLandscapeLightbox(null)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <img src={landscapeLightbox} alt="" className={styles.photoLightboxImg} decoding="async" />
+          </div>
+        </div>
+      ) : null}
       </div>
     </ClickSpark>
   );
